@@ -2,7 +2,7 @@
 import React, { FC } from "react";
 import ActionButton from "@/components/ui/ActionButton";
 
-interface PageProps {
+type PageProps = {
   label: string;
   onClick: () => void;
 }
