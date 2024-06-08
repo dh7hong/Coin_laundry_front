@@ -1,12 +1,7 @@
 "use client";
 
 import React, { FC } from "react";
-
-interface ActionButtonProps {
-  label: string;
-  onClick: () => void;
-};
-
+import { ActionButtonProps } from "@/lib/types";
 
 const ActionButton: FC<ActionButtonProps> = ({ label, onClick }) => {
 	return (
