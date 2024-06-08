@@ -4,8 +4,8 @@ import React, { FC, useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
 import TopNavigation from "@/app/(app)/app/enterShippingAddress/components/TopNavigation/page";
 import EnterPlaceholder from "@/app/(app)/app/enterShippingAddress/components/EnterPlaceholder/page";
-import ActionButtonGray from "@/components/ui/ActionButtonGray";
-import ActionButton from "@/components/ui/ActionButton";
+import ActionButtonGray from "@/app/(app)/app/enterShippingAddress/components/ActionButtonGray/page";
+import ActionButton from "@/app/(app)/app/enterShippingAddress/components/ActionButton/page";
 import InputStatic from "@/app/(app)/app/enterShippingAddress/components/InputStatic/page"; // Import your InputStatic component
 import ResetButton from "@/app/(app)/app/enterShippingAddress/components/ResetButton/page"; // Import your ResetButton component
 

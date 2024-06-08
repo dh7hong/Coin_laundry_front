@@ -21,6 +21,10 @@ export type ToggleSwitchProps = {
   disabled?: boolean;
 };
 
+export type ActionButtonProps = {
+  label: string;
+  onClick: () => void;
+};
 
 export type ValidationFormWithTitleProps = {
   hasTitle: boolean;
@@ -74,4 +78,9 @@ export type ReviewProps = {
   date?: string;
   storeName?: string;
   images?: string[];
+};
+
+export type PageProps = {
+  label: string;
+  onClick: () => void;
 };
