@@ -21,10 +21,6 @@ export type ToggleSwitchProps = {
   disabled?: boolean;
 };
 
-export type ActionButtonProps = {
-  label: string;
-  onClick: () => void;
-};
 
 export type ValidationFormWithTitleProps = {
   hasTitle: boolean;
