@@ -3,20 +3,31 @@ import React, { useState, useEffect } from "react";
 import CustomSelect from "@/components/others/CustomSelect"; // Adjust the path as needed
 
 const CarrierOption: React.FC = () => {
-  const [carrierOption, setCarrierOption] = useState<string>(localStorage.getItem("carrierOption") || "문 앞에 놓아 주세요");
-  const [carrierInput, setCarrierInput] = useState<string>(localStorage.getItem("carrierInput") || "");
+  // Initialize state with empty strings
+  const [carrierOption, setCarrierOption] = useState<string>("");
+  const [carrierInput, setCarrierInput] = useState<string>("");
+
+  // Load from localStorage on client side after component mounts
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCarrierOption(localStorage.getItem("carrierOption") || "문 앞에 놓아 주세요");
+      setCarrierInput(localStorage.getItem("carrierInput") || "");
+    }
+  }, []);
 
   useEffect(() => {
-    localStorage.setItem("carrierOption", carrierOption);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("carrierOption", carrierOption);
 
-    if (carrierOption !== "직접 입력") {
-      localStorage.setItem("carrierInput", "");
-      setCarrierInput("");
+      if (carrierOption !== "직접 입력") {
+        localStorage.setItem("carrierInput", "");
+        setCarrierInput("");
+      }
     }
   }, [carrierOption]);
 
   useEffect(() => {
-    if (carrierOption === "직접 입력") {
+    if (typeof window !== "undefined" && carrierOption === "직접 입력") {
       localStorage.setItem("carrierInput", carrierInput);
     }
   }, [carrierInput, carrierOption]);

@@ -45,16 +45,31 @@ const CustomRadioButton: React.FC<CustomRadioButtonProps> = ({
 
 const EntryMethod: React.FC = () => {
   const [entryMethod, setEntryMethod] = useState<string>('공동현관 비밀번호');
-  const [entryInput, setEntryInput] = useState<string>(localStorage.getItem("entryInput") || '');
+  const [entryInput, setEntryInput] = useState<string>('');
 
   useEffect(() => {
-    localStorage.setItem("entryMethod", entryMethod);
-    localStorage.setItem("entryInput", "");
-    setEntryInput("");
+    if (typeof window !== 'undefined') {
+      const storedEntryMethod = localStorage.getItem("entryMethod") || '공동현관 비밀번호';
+      const storedEntryInput = localStorage.getItem("entryInput") || '';
+      setEntryMethod(storedEntryMethod);
+      setEntryInput(storedEntryInput);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("entryMethod", entryMethod);
+      if (entryMethod !== '공동현관 비밀번호' && entryMethod !== '기타') {
+        localStorage.setItem("entryInput", "");
+        setEntryInput("");
+      }
+    }
   }, [entryMethod]);
 
   useEffect(() => {
-    localStorage.setItem("entryInput", entryInput);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("entryInput", entryInput);
+    }
   }, [entryInput]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

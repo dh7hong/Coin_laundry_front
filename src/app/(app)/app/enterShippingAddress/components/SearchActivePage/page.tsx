@@ -7,7 +7,7 @@ import SearchActive from "@/components/others/SearchActive";
 import { ClipLoader } from "react-spinners";
 import { BasicDivider } from "@/components/ui/BasicDivider";
 
-const SearchActivePage: FC = ({}) => {
+const SearchActivePage: FC = () => {
   const router = useRouter(); // Initialize the router
   const [query, setQuery] = useState("");
   const [results, setResults] = useState(fakeData);
@@ -35,9 +35,11 @@ const SearchActivePage: FC = ({}) => {
   };
 
   const handleSelect = (address: string) => {
-    localStorage.setItem("selectedAddress", address);
-    console.log(`Saved address: ${address}`);
-    alert(`Saved address: ${address}`);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("selectedAddress", address);
+      console.log(`Saved address: ${address}`);
+      alert(`Saved address: ${address}`);
+    }
     router.push("/app/enterShippingAddress/inputAddress/D-addAddress");
   };
 
@@ -51,11 +53,7 @@ const SearchActivePage: FC = ({}) => {
           </div>
           {!query ? (
             <>
-              <BasicDivider
-                className=""
-                variant="thick"
-                vertical={false}
-              />
+              <BasicDivider className="" variant="thick" vertical={false} />
               <div className="self-start ml-[20px] mt-[16px] mb-[8px] text-body-1-normal">
                 이렇게 검색해보세요.
               </div>

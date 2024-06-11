@@ -1,30 +1,41 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SavedFieldsPage from "@/app/(app)/app/enterShippingAddress/components/SavedFieldsPage/page";
 import DeliveryMethodContainer from "@/app/(app)/app/enterShippingAddress/components/DeliveryMethodContainer/page";
 import TopNavigation from "@/components/others/TopNavigation";
 import ActionButton from "@/components/ui/ActionButton";
 import ResetButton from "@/app/(app)/app/enterShippingAddress/components/ResetButton/page";
+
 const Page: FC = ({}) => {
 	const router = useRouter();
+	const [isClient, setIsClient] = useState(false);
+
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			setIsClient(true);
+		}
+	}, []);
 
 	const handleBackNavigation = () => {
-		localStorage.removeItem("detailedAddress");
+		if (isClient) {
+			localStorage.removeItem("detailedAddress");
+		}
 		router.push(
 			"/app/enterShippingAddress/inputAddress/C-searchToggle"
 		);
 	};
 
-  const handleNextPageNavigation = () => {
+	const handleNextPageNavigation = () => {
 		router.push(
 			"/app/enterShippingAddress/inputAddress/FinalAddressCheck"
-		); // Navigate to the C-searchToggle page
+		); // Navigate to the FinalAddressCheck page
 	};
 
-
-  const handleReset = () => {
-		localStorage.removeItem("detailedAddress");
+	const handleReset = () => {
+		if (isClient) {
+			localStorage.removeItem("detailedAddress");
+		}
 		router.push("/app/enterShippingAddress/inputAddress/D-addAddress");
 	};
 
