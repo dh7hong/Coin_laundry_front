@@ -1,27 +1,34 @@
 "use client";
-import React, { FC } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import InputStatic from "@/components/others/InputStatic";
 import TopNavigation from "@/app/(app)/app/enterShippingAddress/components/TopNavigation/page";
 import ActionButton from "@/components/ui/ActionButton";
-import ResetButton from "../ResetButton/page";
+import ResetButton from "@/app/(app)/app/enterShippingAddress/components/ResetButton/page";
 
-const SavedFieldsPage: FC = () => {
+const SavedFieldsPage: React.FC = () => {
 	const router = useRouter();
 
-	const handleReset = () => {
-		localStorage.removeItem("detailedAddress");
-		router.push(
-			"/app/enterShippingAddress/inputAddress/D-addAddress"
-		);
-	};
+	const [savedSelectedAddress, setSavedSelectedAddress] = useState<string>("");
+	const [detailedAddress, setDetailedAddress] = useState<string>("");
+	const [receiverName, setReceiverName] = useState<string>("");
+	const [shippingName, setShippingName] = useState<string>("");
 
-	const savedSelectedAddress =
-		localStorage.getItem("selectedAddress") || "";
-	const detailedAddress =
-		localStorage.getItem("detailedAddress") || "";
-	const receiverName = localStorage.getItem("receiverName") || "";
-	const shippingName = localStorage.getItem("shippingName") || "";
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			setSavedSelectedAddress(localStorage.getItem("selectedAddress") || "");
+			setDetailedAddress(localStorage.getItem("detailedAddress") || "");
+			setReceiverName(localStorage.getItem("receiverName") || "");
+			setShippingName(localStorage.getItem("shippingName") || "");
+		}
+	}, []);
+
+	const handleReset = () => {
+		if (typeof window !== "undefined") {
+			localStorage.removeItem("detailedAddress");
+		}
+		router.push("/app/enterShippingAddress/inputAddress/D-addAddress");
+	};
 
 	return (
 		<div>
@@ -50,6 +57,12 @@ const SavedFieldsPage: FC = () => {
 					배송지 이름
 				</div>
 				<InputStatic value={shippingName} />
+			</div>
+			<div className="mt-[24px] mb-[8px] bg-white w-full flex flex-col items-center rounded-md p-[24px]">
+				<ActionButton label={"다음"} onClick={() => {}} />
+			</div>
+			<div className="mb-[24px]">
+				<ResetButton label={"초기화"} onClick={handleReset} />
 			</div>
 		</div>
 	);
