@@ -1,0 +1,47 @@
+{
+  "pages": {
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
+    ],
+    "/(app)/app/enterShippingAddress/inputAddress/A-shippingName/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(app)/app/enterShippingAddress/inputAddress/A-shippingName/page.js"
+    ],
+    "/(app)/app/enterShippingAddress/inputAddress/B-receiverName/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(app)/app/enterShippingAddress/inputAddress/B-receiverName/page.js"
+    ],
+    "/(app)/app/enterShippingAddress/inputAddress/C-searchToggle/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(app)/app/enterShippingAddress/inputAddress/C-searchToggle/page.css",
+      "static/chunks/app/(app)/app/enterShippingAddress/inputAddress/C-searchToggle/page.js"
+    ],
+    "/(app)/app/enterShippingAddress/inputAddress/D-addAddress/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(app)/app/enterShippingAddress/inputAddress/D-addAddress/page.css",
+      "static/chunks/app/(app)/app/enterShippingAddress/inputAddress/D-addAddress/page.js"
+    ],
+    "/(app)/app/enterShippingAddress/inputAddress/E-addAddressEntryMethod/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(app)/app/enterShippingAddress/inputAddress/E-addAddressEntryMethod/page.js"
+    ],
+    "/(app)/app/enterShippingAddress/inputAddress/FinalAddressCheck/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(app)/app/enterShippingAddress/inputAddress/FinalAddressCheck/page.js"
+    ]
+  }
+}

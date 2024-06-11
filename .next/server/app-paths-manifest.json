@@ -1,0 +1,9 @@
+{
+  "/page": "app/page.js",
+  "/(app)/app/enterShippingAddress/inputAddress/A-shippingName/page": "app/(app)/app/enterShippingAddress/inputAddress/A-shippingName/page.js",
+  "/(app)/app/enterShippingAddress/inputAddress/B-receiverName/page": "app/(app)/app/enterShippingAddress/inputAddress/B-receiverName/page.js",
+  "/(app)/app/enterShippingAddress/inputAddress/C-searchToggle/page": "app/(app)/app/enterShippingAddress/inputAddress/C-searchToggle/page.js",
+  "/(app)/app/enterShippingAddress/inputAddress/D-addAddress/page": "app/(app)/app/enterShippingAddress/inputAddress/D-addAddress/page.js",
+  "/(app)/app/enterShippingAddress/inputAddress/E-addAddressEntryMethod/page": "app/(app)/app/enterShippingAddress/inputAddress/E-addAddressEntryMethod/page.js",
+  "/(app)/app/enterShippingAddress/inputAddress/FinalAddressCheck/page": "app/(app)/app/enterShippingAddress/inputAddress/FinalAddressCheck/page.js"
+}
