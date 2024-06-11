@@ -58,12 +58,6 @@ const SavedFieldsPage: React.FC = () => {
 				</div>
 				<InputStatic value={shippingName} />
 			</div>
-			<div className="mt-[24px] mb-[8px] bg-white w-full flex flex-col items-center rounded-md p-[24px]">
-				<ActionButton label={"다음"} onClick={() => {}} />
-			</div>
-			<div className="mb-[24px]">
-				<ResetButton label={"초기화"} onClick={handleReset} />
-			</div>
 		</div>
 	);
 };
