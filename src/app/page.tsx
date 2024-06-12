@@ -1,9 +1,9 @@
 // src/pages/index.tsx
 import React from "react";
-import MainView from "@/app/(app)/app/home/components/mainViewBeforeLogin/page";
-import ContainerInactiveLaundryPage from "@/app/(app)/app/home/components/containerInactiveLaundryPage/page";
-import AppFooter from "@/app/(app)/app/footer/page";
-import ContainerReviewPage from "@/app/(app)/app/home/components/containerReviewPage/page";
+import MainView from "@/app/(public)/beforeLogin/components/A-MainViewBeforeLogin/page";
+import ContainerInactiveLaundryPage from "@/app/(public)/beforeLogin/components/B-ContainerLaundryPageBeforeLogin/page";
+import ContainerReviewPage from "@/app/(app)/home/components/D-ContainerReviewAfterLogin/page";
+import AppFooter from "@/app/(app)/home/components/F-Footer/page";
 
 export default function HomePage() {
 	return (
