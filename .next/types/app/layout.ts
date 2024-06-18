@@ -1,4 +1,4 @@
-// File: C:\Users\dh7hong\Desktop\Coin_laundry_front\src\app\layout.tsx
+// File: C:\Users\dh7hong\Desktop\REACT PRO\Coin_laundry_front\src\app\layout.tsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
