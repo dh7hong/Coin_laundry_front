@@ -1,19 +1,34 @@
-"use client";
+import React, { FC, ReactNode } from "react";
+import ArrowLeft from "@/assets/icons/others/arrow-left.svg";
 
-import React, { FC } from "react";
-import TopNavigation from "@/components/others/TopNavigation";
-
-interface PageProps {
-  text: string;
-  onClick: () => void;
-}
-
-const Page: FC<PageProps> = ({ text, onClick }) => {
-  return (
-    <div>
-      <TopNavigation text={text} onClick={onClick} />
-    </div>
-  );
+type TopNavigationProps = {
+	text: string;
+	onClick: () => void;
+	children?: ReactNode;
 };
 
-export default Page;
+const TopNavigation: FC<TopNavigationProps> = ({
+	text,
+	onClick,
+	children,
+}) => {
+	return (
+		<div className="grid grid-cols-3 items-center w-full">
+      <div className="ml-[12px] my-[9px]">
+
+			<div className="w-[36px] h-[36px] flex justify-center items-center">
+				<button onClick={onClick} className="flex justify-center items-center">
+					<ArrowLeft />
+				</button>
+			</div>
+
+      </div>
+			<span className="text-center text-headline-1 font-semibold">{text}</span>
+			<div className="justify-self-end flex items-center text-label-2">
+				{children}
+			</div>
+		</div>
+	);
+};
+
+export default TopNavigation;

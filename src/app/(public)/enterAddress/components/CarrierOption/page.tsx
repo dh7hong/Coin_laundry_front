@@ -1,6 +1,12 @@
+// a component that allows users to select final options 
+// for their packages and input custom carrier instructions 
+// after entry method.
+// AND THIS COMPONENT IS FLEXIBLE TO SIZE CHANGES
+
 "use client";
 import React, { useState, useEffect } from "react";
-import CustomSelect from "@/components/others/CustomSelect"; // Adjust the path as needed
+import CustomSelect from "@/app/(public)/enterAddress/components/CustomSelect/page"; // Adjust the path as needed
+import { Option } from "@/lib/types"; // Adjust the path as needed
 
 const CarrierOption: React.FC = () => {
   // Initialize state with empty strings
@@ -36,11 +42,11 @@ const CarrierOption: React.FC = () => {
     setCarrierInput(e.target.value);
   };
 
-  const options = [
-    "문 앞에 놓아 주세요",
-    "경비실에 맡겨 주세요",
-    "택배함에 넣어 주세요",
-    "직접 입력"
+  const options: Option[] = [
+    { value: "문 앞에 놓아 주세요", label: "문 앞에 놓아 주세요" },
+    { value: "경비실에 맡겨 주세요", label: "경비실에 맡겨 주세요" },
+    { value: "택배함에 넣어 주세요", label: "택배함에 넣어 주세요" },
+    { value: "직접 입력", label: "직접 입력" }
   ];
 
   return (
@@ -50,8 +56,8 @@ const CarrierOption: React.FC = () => {
       <CustomSelect
         id="carrier-options"
         value={carrierOption}
-        onChange={(e) => setCarrierOption(e.target.value)}
-        options={options.map(option => ({ value: option, label: option }))}
+        onChange={(e: React.ChangeEvent<{ value: string }>) => setCarrierOption(e.target.value)}
+        options={options}
       />
       {carrierOption === "직접 입력" && (
         <div className="mt-2">
@@ -61,7 +67,7 @@ const CarrierOption: React.FC = () => {
             placeholder="직접 입력해 주세요"
             value={carrierInput}
             onChange={handleInputChange}
-            className="border border-line-normal text-body-2-normal rounded-md px-3 py-[12px] mt-[8px] w-full outline-none"
+            className="border border-line-normal text-body-2-normal rounded-md px-3 py-[12px] mt-[8px] w-full max-w-[342px] outline-none"
           />
         </div>
       )}
@@ -70,3 +76,4 @@ const CarrierOption: React.FC = () => {
 };
 
 export default CarrierOption;
+

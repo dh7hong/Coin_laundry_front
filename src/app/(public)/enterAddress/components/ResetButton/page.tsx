@@ -7,12 +7,15 @@ interface ResetButtonProps {
 
 const ResetButton: FC<ResetButtonProps> = ({ label, onClick }) => {
 	return (
+		<div className="mr-[24px]">
+
 		<button
-			className="w-[342px] h-[48px] mt-[16px] bg-red-500 text-white rounded-[10px] flex items-center justify-center"
+			className="w-[48px] h-[24px] bg-red-500 text-white rounded-[10px] flex items-center justify-center text-caption-1"
 			onClick={onClick}
 		>
 			{label}
 		</button>
+		</div>
 	);
 };
 
