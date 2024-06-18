@@ -15,7 +15,6 @@ const ShippingName: FC = () => {
   const [inputValue, setInputValue] = useState("");
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
-  const actionButtonRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const savedInput = localStorage.getItem("shippingName");
@@ -25,15 +24,14 @@ const ShippingName: FC = () => {
     }
 
     const handleResize = () => {
-      const height = window.innerHeight;
+      const height = window.visualViewport.height;
       const viewportHeight = document.documentElement.clientHeight;
-      const safeAreaInsetBottom = window.visualViewport.height - height;
-      const calculatedKeyboardHeight = viewportHeight - height + safeAreaInsetBottom;
+      const calculatedKeyboardHeight = viewportHeight - height;
       
       // Log the keyboard height to the console
       console.log(`Keyboard height: ${calculatedKeyboardHeight}px`);
 
-      setKeyboardHeight(calculatedKeyboardHeight);
+      setKeyboardHeight(calculatedKeyboardHeight > 0 ? calculatedKeyboardHeight : 0);
     };
 
     window.visualViewport.addEventListener("resize", handleResize);
@@ -94,11 +92,10 @@ const ShippingName: FC = () => {
       </div>
       <div className="flex-grow w-full max-w-[430px] bg-white"></div>
       <div
-        ref={actionButtonRef}
         className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[430px] bg-white transition-transform duration-300"
         style={{
           height: "100px",
-          marginBottom: `${keyboardHeight}px`,
+          marginBottom: keyboardHeight,
         }}
       >
         {isButtonGray ? (
