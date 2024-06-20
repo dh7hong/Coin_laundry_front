@@ -23,11 +23,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 
   return (
     <div
-      className="relative cursor-pointer w-full max-w-[342px] h-[46px]"
+      className="relative cursor-pointer w-full max-w-[430px] h-[46px]"
       onClick={() => setIsOpen(!isOpen)}
     >
       <div className="flex justify-between items-center border border-gray-300 rounded-md px-[6px] py-[12px]">
-        <span className={`${"text-body-2-reading font-semibold text-label-neutral"} ml-[10px]`}>
+        <span className={`${"text-body-1-reading font-semibold text-label-neutral"} ml-[10px]`}>
           {selectedOption ? selectedOption.label : "Select an option"}
         </span>
         <ArrowDownIcon

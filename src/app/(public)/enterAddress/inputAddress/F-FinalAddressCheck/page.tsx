@@ -11,7 +11,8 @@ const FinalAddressCheck: FC = () => {
 
 	const [savedSelectedAddress, setSavedSelectedAddress] =
 		useState<string>("");
-	const [detailedAddress, setDetailedAddress] = useState<string>("");
+	const [detailedAddress, setDetailedAddress] =
+		useState<string>("");
 	const [receiverName, setReceiverName] = useState<string>("");
 	const [shippingName, setShippingName] = useState<string>("");
 	const [entryMethod, setEntryMethod] = useState<string>("");
@@ -27,12 +28,20 @@ const FinalAddressCheck: FC = () => {
 			setDetailedAddress(
 				localStorage.getItem("detailedAddress") || ""
 			);
-			setReceiverName(localStorage.getItem("receiverName") || "");
-			setShippingName(localStorage.getItem("shippingName") || "");
+			setReceiverName(
+				localStorage.getItem("receiverName") || ""
+			);
+			setShippingName(
+				localStorage.getItem("shippingName") || ""
+			);
 			setEntryMethod(localStorage.getItem("entryMethod") || "");
 			setEntryInput(localStorage.getItem("entryInput") || "");
-			setCarrierOption(localStorage.getItem("carrierOption") || "");
-			setCarrierInput(localStorage.getItem("carrierInput") || "");
+			setCarrierOption(
+				localStorage.getItem("carrierOption") || ""
+			);
+			setCarrierInput(
+				localStorage.getItem("carrierInput") || ""
+			);
 		}
 	}, []);
 
@@ -40,18 +49,20 @@ const FinalAddressCheck: FC = () => {
 		if (typeof window !== "undefined") {
 			localStorage.clear(); // Clear all items in localStorage
 		}
-		router.push("/enterAddress/inputAddress/A-ShippingName");
+		router.push("/enterAddress/inputAddress/shippingName");
 	};
 
 	const handleNextPageNavigation = () => {
-		router.push("/enterAddress/inputAddress/F-F-FinalAddressCheck"); // Navigate to the F-F-FinalAddressCheck page
+		router.push(
+			"/enterAddress/inputAddress/FinalAddressCheck"
+		); // Navigate to the F-F-FinalAddressCheck page
 	};
 
 	const handleBackNavigation = () => {
 		if (typeof window !== "undefined") {
 			localStorage.removeItem("detailedAddress");
 		}
-		router.push("/enterAddress/inputAddress/C-SearchToggle");
+		router.push("/enterAddress/inputAddress/findAddress");
 	};
 
 	return (
@@ -60,7 +71,9 @@ const FinalAddressCheck: FC = () => {
 				<TopNavigation
 					text={`배송지 추가`}
 					onClick={handleBackNavigation}
-				/>
+				>
+					<ResetButton label={"초기화"} onClick={handleReset} />
+				</TopNavigation>
 
 				<div className="w-full max-w-[390px] bg-white px-[24px] text-body-2-normal font-medium">
 					<div className="text-label-1-normal font-semibold ml-[8px] mt-[16px] mb-[8px]">
@@ -125,9 +138,7 @@ const FinalAddressCheck: FC = () => {
 						onClick={handleNextPageNavigation}
 					/>
 				</div>
-				<div className="mb-[24px]">
-					<ResetButton label={"초기화"} onClick={handleReset} />
-				</div>
+				<div className="mb-[24px]"></div>
 			</div>
 		</div>
 	);
