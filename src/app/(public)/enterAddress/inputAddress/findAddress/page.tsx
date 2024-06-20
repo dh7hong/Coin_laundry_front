@@ -14,13 +14,13 @@ const SearchToggle: FC = ({}) => {
 
 	return (
 		<div>
-			<div className="flex justify-center items-center bg-gray-50">
+			
 				{!isActive ? (
 					<SearchInactivePage handleActivate={handleActivate} />
 				) : (
 					<SearchActivePage />
 				)}
-			</div>
+			
 		</div>
 	);
 };

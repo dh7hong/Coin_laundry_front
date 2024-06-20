@@ -19,11 +19,11 @@ const MainView: React.FC = () => {
 	const router = useRouter(); // Initialize the router
 
 	const handleSetInfo = () => {
-		router.push("/enterAddress/inputAddress/A-ShippingName"); // Navigate to the A-ShippingName page
+		router.push("/enterAddress/inputAddress/shippingName"); // Navigate to the shippingName page
 	};
 
 	const navigateToUserGuide = () => {
-		router.push("/userGuide"); // Navigate to the A-ShippingName page
+		router.push("/userGuide"); // Navigate to the shippingName page
 	};
 
 	return (

@@ -7,12 +7,11 @@ interface InputStaticProps {
 const InputStatic: FC<InputStaticProps> = ({ value }) => {
   return (
     <div>
-      <div className="flex items-center rounded-md w-full max-w-[430px] h-[48px] px-[16px] py-[12px] bg-[#F8F8FA] cursor-not-allowed">
+      <div className="flex items-center  w-full max-w-[430px] h-[48px] px-[16px] py-[12px] rounded-md bg-[#F8F8FA] cursor-not-allowed">
         <input
           type="text"
           value={value}
-          className="bg-transparent text-body-2-normal text-label-normal outline-none w-full"
-          disabled
+          className="bg-[#F8F8FA] text-body-1-reading font-medium text-label-normal outline-none w-full"
         />
       </div>
     </div>

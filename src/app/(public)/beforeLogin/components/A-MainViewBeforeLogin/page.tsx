@@ -19,13 +19,12 @@ const MainView: React.FC = () => {
 	const router = useRouter(); // Initialize the router
 
 	const handleSetInfo = () => {
-		router.push("/enterAddress/inputAddress/A-ShippingName"); // Navigate to the A-ShippingName page
-	};
-	
-	const navigateToUserGuide = () => {
-		router.push("/userGuide"); // Navigate to the 
+		router.push("/enterAddress/inputAddress/shippingName"); // Navigate to the shippingName page
 	};
 
+	const navigateToUserGuide = () => {
+		router.push("/userGuide"); // Navigate to the
+	};
 
 	return (
 		<div className="bg-gray-50">
@@ -55,7 +54,10 @@ const MainView: React.FC = () => {
 					<div className="text-heading-2 font-semibold">
 						세탁 신청
 					</div>
-					<button onClick={navigateToUserGuide} className="flex text-primary-strong text-label-1-normal justify-between items-center space-x-1">
+					<button
+						onClick={navigateToUserGuide}
+						className="flex text-primary-strong text-label-1-normal justify-between items-center space-x-1"
+					>
 						<Info className="fill-primary-strong " />
 						<div>이용 가이드 보기</div>
 						<ChevronRightIcon className="fill-primary-strong" />

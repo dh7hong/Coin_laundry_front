@@ -67,7 +67,7 @@ const CarrierOption: React.FC = () => {
             placeholder="직접 입력해 주세요"
             value={carrierInput}
             onChange={handleInputChange}
-            className="border border-line-normal text-body-2-normal rounded-md px-3 py-[12px] mt-[8px] w-full max-w-[342px] outline-none"
+            className="border border-line-normal text-body-1-normal rounded-md px-3 py-[12px] mt-[8px] w-full max-w-[430px] outline-none"
           />
         </div>
       )}

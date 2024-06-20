@@ -3,9 +3,10 @@ import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SavedFieldsPage from "@/app/(public)/enterAddress/components/SavedFieldsPage/page";
 import DeliveryMethodContainer from "@/app/(public)/enterAddress/components/DeliveryMethodContainer/page";
-import TopNavigation from "@/components/others/TopNavigation";
-import ActionButton from "@/components/ui/ActionButton";
+import TopNavigation from "@/app/(public)/enterAddress/components/TopNavigation/page";
+import ActionButton from "@/app/(public)/enterAddress/components/ActionButton/page";
 import ResetButton from "@/app/(public)/enterAddress/components/ResetButton/page";
+import ProgressBar from "../../components/ProgressBar/page";
 
 const AddAddressEntryMethod: FC = ({}) => {
 	const router = useRouter();
@@ -21,39 +22,43 @@ const AddAddressEntryMethod: FC = ({}) => {
 		if (isClient) {
 			localStorage.removeItem("detailedAddress");
 		}
-		router.push("/enterAddress/inputAddress/C-SearchToggle");
+		router.push("/enterAddress/inputAddress/findAddress");
 	};
 
-	const handleNextPageNavigation = () => {
-		router.push("/enterAddress/inputAddress/F-FinalAddressCheck"); // Navigate to the F-FinalAddressCheck page
+	const handleNextNavigation = () => {
+		router.push(
+			"/enterAddress/inputAddress/F-FinalAddressCheck"
+		); // Navigate to the F-FinalAddressCheck page
 	};
 
 	const handleReset = () => {
 		if (isClient) {
 			localStorage.removeItem("detailedAddress");
 		}
-		router.push("/enterAddress/inputAddress/D-AddAddress");
+		router.push("/enterAddress/inputAddress/addDetailedAddress");
 	};
 
 	return (
-		<div className="min-h-screen flex flex-col bg-gray-50 items-center">
-			<div className="w-full max-w-[390px] bg-white flex flex-col justify-center items-center">
+		<div className="flex flex-col justify-center items-center bg-gray-50 min-h-screen">
+      <div className="w-full max-w-[430px] bg-static-white flex flex-col pb-[16px]">
+				<ProgressBar progress={62.5} />
 				<TopNavigation
-					text={`배송지 추가`}
+					text="배송지 추가"
 					onClick={handleBackNavigation}
-				/>
+				>
+					<ResetButton label="초기화" onClick={handleReset} />
+				</TopNavigation>
 				<DeliveryMethodContainer />
 				<SavedFieldsPage />
 
-				<div className="mt-[24px] mb-[8px] bg-white w-full flex flex-col items-center rounded-md p-[24px]">
-					<ActionButton
-						label={"다음"}
-						onClick={handleNextPageNavigation}
-					/>
-				</div>
-				<div className="mb-[24px]">
-					<ResetButton label={"초기화"} onClick={handleReset} />
-				</div>
+				<>
+            <div className="w-full max-w-[430px] h-[1px] bg-line-normal shadow-md"></div>
+            <ActionButton
+              label="다음"
+              onClick={handleNextNavigation}
+              className="w-full text-primary-normal"
+            />
+          </>
 			</div>
 		</div>
 	);

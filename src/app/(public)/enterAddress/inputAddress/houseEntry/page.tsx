@@ -253,7 +253,11 @@ const EntryMethod: React.FC = () => {
 						</div>
 					)}
 				</div>
-				<SavedFieldsPage />
+				<div className="mb-[100px]">
+				<SavedFieldsPage/>
+
+				</div>
+				
 				<div className="flex-grow w-full max-w-[430px] bg-static-white"></div>
 				<div
 					className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[430px] bg-white transition-transform duration-300"
