@@ -1,13 +1,13 @@
 "use client";
 import React, { FC, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import TopNavigation from "@/app/(public)/enterAddress/components/TopNavigation/page";
-import EnterPlaceholder from "@/app/(public)/enterAddress/components/EnterPlaceholder/page";
-import ActionButtonGray from "@/app/(public)/enterAddress/components/ActionButtonGray/page";
-import ActionButton from "@/app/(public)/enterAddress/components/ActionButton/page";
-import InputStatic from "@/app/(public)/enterAddress/components/InputStatic/page";
-import ResetButton from "@/app/(public)/enterAddress/components/ResetButton/page";
-import ProgressBar from "@/app/(public)/enterAddress/components/ProgressBar/page";
+import TopNavigation from "@/app/(public)/enterAddress/components/common/TopNavigation/page";
+import EnterPlaceholder from "@/app/(public)/enterAddress/components/common/EnterPlaceholder/page";
+import ActionButtonGray from "@/app/(public)/enterAddress/components/common/ActionButtonGray/page";
+import ActionButton from "@/app/(public)/enterAddress/components/common/ActionButton/page";
+import InputStatic from "@/app/(public)/enterAddress/components/common/InputStatic/page";
+import ResetButton from "@/app/(public)/enterAddress/components/common/ResetButton/page";
+import ProgressBar from "@/app/(public)/enterAddress/components/common/ProgressBar/page";
 
 const ReceiverName: FC = () => {
 	const router = useRouter();
@@ -31,42 +31,6 @@ const ReceiverName: FC = () => {
 		if (savedShippingName) {
 			setShippingName(savedShippingName);
 		}
-
-		const handleResize = () => {
-			if (window.visualViewport) {
-				const height = window.visualViewport.height;
-				const viewportHeight =
-					document.documentElement.clientHeight;
-				const calculatedKeyboardHeight = viewportHeight - height;
-
-				// Log the keyboard height to the console
-				console.log(
-					`Keyboard height: ${calculatedKeyboardHeight}px`
-				);
-
-				setKeyboardHeight(
-					calculatedKeyboardHeight > 0
-						? calculatedKeyboardHeight
-						: 0
-				);
-			}
-		};
-
-		if (window.visualViewport) {
-			window.visualViewport.addEventListener(
-				"resize",
-				handleResize
-			);
-		}
-
-		return () => {
-			if (window.visualViewport) {
-				window.visualViewport.removeEventListener(
-					"resize",
-					handleResize
-				);
-			}
-		};
 	}, []);
 
 	const handleBackNavigation = () => {
@@ -84,7 +48,13 @@ const ReceiverName: FC = () => {
 	};
 
 	const handleNextNavigation = () => {
-		router.push("/enterAddress/inputAddress/findAddress");
+		router.push("/enterAddress/inputAddress/searchAddress");
+	};
+
+	const handleReceiverNameChange = (
+		e: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setInputValue(e.target.value);
 	};
 
 	const handleReset = () => {
@@ -112,6 +82,8 @@ const ReceiverName: FC = () => {
 						<EnterPlaceholder
 							id="enterReceiverNameInput"
 							placeholder="받는 분 성함을 입력해 주세요"
+							value={inputValue}
+							onChange={handleReceiverNameChange}
 							ref={inputRef}
 						/>
 					) : (
@@ -127,33 +99,19 @@ const ReceiverName: FC = () => {
 			</div>
 
 			<div className="flex-grow w-full max-w-[430px] bg-static-white"></div>
-			<div
-				className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[430px] bg-white transition-transform duration-300"
-				style={{
-					height: "100px",
-					transform: `translateY(-${keyboardHeight}px)`,
-				}}
-			>
+			<div className="fixed bottom-[0px] w-full max-w-[430px] h-[100px] shadow-elevation-shadow-normal-top z-50">
 				{isButtonGray ? (
-					<>
-						<div className="w-full max-w-[430px] h-[100px] bg-line-normal border shadow-elevation-shadow-normal">
-							<ActionButtonGray
-								label="다음"
-								onClick={handleSave}
-								className="w-full text-primary-normal"
-							/>
-						</div>
-					</>
+					<ActionButtonGray
+						label="다음"
+						onClick={handleSave}
+						className="w-full text-primary-normal"
+					/>
 				) : (
-					<>
-						<div className="w-full max-w-[430px] h-[100px] bg-line-normal border shadow-elevation-shadow-normal">
-							<ActionButton
-								label="다음"
-								onClick={handleNextNavigation}
-								className="w-full text-primary-normal"
-							/>
-						</div>
-					</>
+					<ActionButton
+						label="다음"
+						onClick={handleNextNavigation}
+						className="w-full text-primary-normal"
+					/>
 				)}
 			</div>
 		</div>

@@ -14,7 +14,7 @@
 
 /* InputCommon.css */
 .input-common::placeholder {
-	@apply text-label-assistive font-normal text-body-2-normal;
+	@apply text-label-assistive font-normal text-body-1-normal;
 }
 
 .custom-select-container {
@@ -63,4 +63,12 @@
 
 .option:hover {
 	background-color: #f1f1f1;
+}
+
+.mapboxgl-ctrl-logo {
+	display: none !important;
+}
+
+.mapboxgl-ctrl-bottom-right {
+	display: none !important;
 }

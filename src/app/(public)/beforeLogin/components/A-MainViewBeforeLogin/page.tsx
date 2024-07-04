@@ -19,7 +19,7 @@ const MainView: React.FC = () => {
 	const router = useRouter(); // Initialize the router
 
 	const handleSetInfo = () => {
-		router.push("/enterAddress/inputAddress/shippingName"); // Navigate to the shippingName page
+		router.push("/enterAddress/inputAddress/phoneStart"); // Navigate to the shippingName page
 	};
 
 	const navigateToUserGuide = () => {
@@ -95,7 +95,7 @@ const MainView: React.FC = () => {
 					<LaundryItem
 						icon={
 							<div className="relative">
-								<TShirtIconSmall className="absolute bottom-[4px] right-[7px] w-[35.45px] h-[35.45px]" />
+								<TShirtIconSmall className="absolute bottom-[3.1px] right-[7px] w-[35.45px] h-[35.45px]" />
 								<BedIconSmall className="relative w-[35.45px] h-[35.45px] top-[4px] left-[7px]" />
 							</div>
 						}
@@ -113,7 +113,7 @@ const MainView: React.FC = () => {
 				<div className="w-[350px] h-[60px]">
 					<button className="w-full flex items-center justify-center bg-white p-4 rounded-xl">
 						<NavigationIcon className="mr-2 w-5 h-6" /> <br />
-						<span className="text-label-1-reading font-semibold">
+						<span className="text-label-1-normal font-semibold">
 							내 주위 이용 가능한 코인 세탁소 보기
 						</span>
 					</button>

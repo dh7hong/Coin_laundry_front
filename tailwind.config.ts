@@ -4,7 +4,6 @@ import defaultTheme from "tailwindcss/defaultTheme";
 
 const config: Config = {
 	content: [
-		"./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/components/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/app/**/*.{js,ts,jsx,tsx,mdx}",
 	],
@@ -24,7 +23,10 @@ const config: Config = {
 					"radial-gradient(var(--tw-gradient-stops))",
 				"gradient-conic":
 					"conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+				userGuide:
+					"linear-gradient(180deg, rgba(8, 151, 156, 0.00) 31.06%, #08979C 100%)",
 			},
+
 			// text-primary-strong
 			colors: {
 				primary: {
@@ -159,6 +161,10 @@ const config: Config = {
 				"elevation-shadow-heavy": `0 0 8px 0 rgba(0, 0, 0, 0.08), 
           0 8px 16px 0 rgba(0, 0, 0, 0.08),
           0 16px 20px 0 rgba(0, 0, 0, 0.12)`,
+				"elevation-shadow-normal-top": `0 -2px 4px 0 rgba(0, 0, 0, 0.1)`,
+				"elevation-shadow-emphasize-top": `0 -1px 1px 0 rgba(0, 0, 0, 0.08), 
+          0 -1px 4px 0 rgba(0, 0, 0, 0.08),
+          0 -2px 8px 0 rgba(0, 0, 0, 0.12)`,
 			},
 			borderRadius: {
 				sm: "4px",
@@ -169,6 +175,7 @@ const config: Config = {
 			opacity: {
 				"16": "0.16",
 			},
+
 			fontSize: {
 				"title-1": [
 					"24px",
