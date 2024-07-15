@@ -9,6 +9,4 @@ async function testConnection() {
   }
 }
 
-
-
 testConnection();
