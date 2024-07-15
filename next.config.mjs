@@ -15,6 +15,8 @@ const nextConfig = {
       };
     }
 
+
+    
     // Add custom webpack configurations here
     config.resolve.alias = {
       ...config.resolve.alias,
