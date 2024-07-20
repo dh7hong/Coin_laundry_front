@@ -28,7 +28,7 @@ export default function AppFooter() {
     };
 
     return (
-        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-white flex justify-around items-center h-16 w-[390px] rounded-md z-40">
+        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-white text-interaction-inactive flex justify-around items-center h-16 w-full max-w-[430px] rounded-t-md shadow-elevation-shadow-emphasize z-40">
             <div className="flex w-full justify-between px-6">
                 {routes.map((route) => (
                     <button
@@ -37,15 +37,15 @@ export default function AppFooter() {
                         className="flex flex-col items-center flex-1"
                     >
                         {pathname === route.path ? (
-                            <route.IconOn className="w-6 h-6 mb-1" />
+                            <route.IconOn className="w-[24px] h-[24px] mb-1" />
                         ) : (
-                            <route.IconOff className="w-6 h-6 mb-1" />
+                            <route.IconOff className="w-[24px] h-[24px] mb-1" />
                         )}
                         <span
                             className={`text-xs ${
                                 pathname === route.path
-                                    ? "text-primary"
-                                    : "text-gray-400"
+                                    ? "text-label-neutral"
+                                    : "text-interaction-inactive"
                             }`}
                         >
                             {route.label}

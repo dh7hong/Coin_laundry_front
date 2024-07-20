@@ -1,25 +1,17 @@
-import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 
 const PopupInitial: React.FC = () => {
 	const [showPopup, setShowPopup] = useState(true);
 
 	return (
-		<div className="relative ml-20">
+		<div className="relative ">
 			{showPopup && (
-				<div className="absolute text-label-1-normal bottom-0 left-3/4 transform -translate-x-1/2 mt-2 w-[140px] h-[34px] bg-teal-500 text-white rounded-lg shadow-lg flex items-center justify-between px-1 z-10">
-					<span className="ml-auto">처음 오셨어요?</span>
-					<button
-						className="w-4 h-4 flex items-center justify-center ml-2"
-						onClick={() => setShowPopup(false)}
-					>
-						<FontAwesomeIcon
-							icon={faCircleXmark}
-							className="text-white"
-							style={{ fontSize: "12px" }}
-						/>
-					</button>
+				<div className="absolute bottom-[10px] w-[210px] bg-primary-normal text-white rounded-lg flex items-center justify-center text-label-1-normal font-normal z-10 px-[10px] py-[6px]">
+					<div className="flex justify-center">
+						<span>어떻게 이용하는지 알려드릴게요!</span>
+					</div>
+					
+					<div className="absolute -bottom-[2px] left-[93%] w-[8px] h-[8px] bg-primary-normal transform rotate-45 z-0"></div>
 				</div>
 			)}
 		</div>

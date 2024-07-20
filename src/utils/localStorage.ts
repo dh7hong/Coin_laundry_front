@@ -87,19 +87,19 @@ export const combineAndSaveData = () => {
 };
 
 export const clearSpecificLocalStorageItems = () => {
-  if (typeof window !== 'undefined') {
-    const phoneNumber = localStorage.getItem('phoneNumber');
-		const id = localStorage.getItem('editAddressId');
-    const keysToKeep = ['phoneNumber','editAddressId'];
+	if (typeof window !== "undefined") {
+		const phoneNumber = localStorage.getItem("phoneNumber");
+		const id = localStorage.getItem("editAddressId");
+		const keysToKeep = ["phoneNumber", "editAddressId"];
 
-    Object.keys(localStorage).forEach((key) => {
-      if (!keysToKeep.includes(key)) {
-        localStorage.removeItem(key);
-      }
-    });
+		Object.keys(localStorage).forEach((key) => {
+			if (!keysToKeep.includes(key)) {
+				localStorage.removeItem(key);
+			}
+		});
 
-    if (phoneNumber) {
-      localStorage.setItem('phoneNumber', phoneNumber);
-    }
-  }
+		if (phoneNumber) {
+			localStorage.setItem("phoneNumber", phoneNumber);
+		}
+	}
 };

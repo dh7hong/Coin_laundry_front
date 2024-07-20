@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import TopNavigation from "@/app/(public)/enterAddress/components/common/TopNavigation/page";
 import ActionButtonHalfLeft from "@/app/(public)/enterAddress/components/common/ActionButtonHalfLeft/page";
@@ -7,7 +7,8 @@ import ActionButtonHalfRight from "@/app/(public)/enterAddress/components/common
 import ResetButton from "@/app/(public)/enterAddress/components/common/ResetButton/page";
 import ProgressBar from "@/app/(public)/enterAddress/components/common/ProgressBar/page";
 import CustomPhoneInput from "@/app/(public)/enterAddress/components/cellular/CustomPhoneInput/page"; // Adjust the path as needed
-import ShipReceiverAddressDetailEntryCarrier from "@/app/(public)/enterAddress/components/common/ShipReceiverAddressDetailEntryCarrier/page"; // Adjust the path as needed
+import { getAddressesByPhoneNumber } from "@/utils/api";
+
 const CellularInput: React.FC = () => {
 	const router = useRouter();
 	const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -17,26 +18,16 @@ const CellularInput: React.FC = () => {
 	};
 
 	const handleReset = () => {
-		// Handle reset logic if needed
 		setPhoneNumber("");
 	};
 
 	const handleNextNavigation = () => {
 		if (phoneNumber.length === 13) {
-			localStorage.setItem("phoneNumber", phoneNumber);
-			// Ensure the phone number is fully entered
-			router.push("/enterAddress/inputAddress/shippingName"); // Adjust the route as needed
-		} else {
-			alert("Please enter a valid phone number.");
-		}
-	};
-
-	const goToListOfAddresses = () => {
-		if (phoneNumber.length === 13) {
-			localStorage.setItem("phoneNumber", phoneNumber);
-			convertPhoneNumberToJson();
-			// Ensure the phone number is fully entered
-			router.push("/crudAddress/addressList"); // Adjust the route as needed
+			localStorage.setItem(
+				"phoneNumber",
+				JSON.stringify(phoneNumber)
+			);
+			router.push("/enterAddress/inputAddress/shippingName");
 		} else {
 			alert("Please enter a valid phone number.");
 		}
@@ -56,6 +47,18 @@ const CellularInput: React.FC = () => {
 				}
 			}
 		});
+	};
+
+	const goToListOfAddresses = async () => {
+		if (phoneNumber.length === 13) {
+			localStorage.setItem("phoneNumber", phoneNumber);
+			convertPhoneNumberToJson();
+			// await setDefaultShippingAddress(phoneNumber);
+			// console.log("default address set successfully to:", localStorage.getItem("shippingAddress"));
+			router.push("/crudAddress/addressList");
+		} else {
+			alert("Please enter a valid phone number.");
+		}
 	};
 
 	return (
@@ -87,12 +90,12 @@ const CellularInput: React.FC = () => {
 				<ActionButtonHalfLeft
 					label="아니요"
 					onClick={handleNextNavigation}
-					className="w-1/2 border-[2px] border-label-disable bg-static-white text-label-neutral"
+					className="border-[2px] border-label-disable bg-static-white text-label-neutral"
 				/>
 				<ActionButtonHalfRight
 					label="예"
 					onClick={goToListOfAddresses}
-					className="-w-1/2 bg-primary-normal text-static-white"
+					className="bg-primary-normal text-static-white"
 				/>
 			</div>
 			<div className="flex-grow w-full max-w-[430px] bg-static-white"></div>

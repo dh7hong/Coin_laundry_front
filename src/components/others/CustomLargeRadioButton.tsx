@@ -1,3 +1,4 @@
+"use client";
 import RadioLargeActive from "@/assets/icons/others/radioLargeActive.svg";
 import RadioLargeInactive from "@/assets/icons/others/radioLargeInactive.svg";
 
@@ -8,6 +9,13 @@ export default function CustomLargeRadioButton({
 	label,
 	checked,
 	onChange,
+}: {
+	id: string;
+	name: string;
+	value: string;
+	label: string;
+	checked: boolean;
+	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
 	return (
 		<label

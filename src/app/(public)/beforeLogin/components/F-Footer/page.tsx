@@ -28,8 +28,8 @@ export default function AppFooter() {
     };
 
     return (
-        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-white text-interaction-inactive flex justify-around items-center h-16 w-full max-w-[430px] rounded-t-md z-40">
-            <div className="flex w-full justify-between px-6">
+        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-white text-interaction-inactive flex justify-around items-center h-16 w-full max-w-[430px] rounded-t-md shadow-elevation-shadow-emphasize z-40">
+            <div className="flex w-full justify-between px-[20px]">
                 {routes.map((route) => (
                     <button
                         key={route.path}

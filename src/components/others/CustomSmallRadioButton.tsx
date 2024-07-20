@@ -1,3 +1,4 @@
+"use client";
 import RadioSmallActive from "@/assets/icons/others/radioSmallActive.svg";
 import RadioSmallInactive from "@/assets/icons/others/radioSmallInactive.svg";
 
@@ -8,6 +9,13 @@ export default function CustomSmallRadioButton({
 	label,
 	checked,
 	onChange,
+}: {
+	id: string;
+	name: string;
+	value: string;
+	label: string;
+	checked: boolean;
+	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
 	return (
 		<label

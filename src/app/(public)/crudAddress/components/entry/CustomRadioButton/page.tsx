@@ -1,3 +1,4 @@
+"use client";
 import RadioSmallActive from "@/assets/icons/others/radioSmallActive.svg";
 import RadioSmallInactive from "@/assets/icons/others/radioSmallInactive.svg";
 

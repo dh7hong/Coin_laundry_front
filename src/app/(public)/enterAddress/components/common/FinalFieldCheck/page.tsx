@@ -13,9 +13,9 @@ const ShipReceiverAddressDetailEntryCellular: React.FC = () => {
     const [carrierInput, setCarrierInput] = useState<string>("");
     const [phoneNumber, setPhoneNumber] = useState<string>("");
 
-		const convertPhoneNumberToJson = () => {
+		const convertPhoneNumberAndSelectedAddressToJson = () => {
 			const keys = [
-				'phoneNumber'
+				'phoneNumber', 'selectedAddress'
 			];
 		
 			keys.forEach(key => {
@@ -32,10 +32,10 @@ const ShipReceiverAddressDetailEntryCellular: React.FC = () => {
 		};
 
     useEffect(() => {
-        convertPhoneNumberToJson(); // Ensure phoneNumber is stored as JSON
+        convertPhoneNumberAndSelectedAddressToJson(); // Ensure phoneNumber is stored as JSON
 
         if (typeof window !== "undefined") {
-            setSelectedAddress(localStorage.getItem("selectedAddress") ?? "");
+            setSelectedAddress(JSON.parse(localStorage.getItem("selectedAddress") ?? ""));
             setDetailedAddress(localStorage.getItem("detailedAddress") ?? "");
             setReceiverName(localStorage.getItem("receiverName") ?? "");
             setShippingName(localStorage.getItem("shippingName") ?? "");

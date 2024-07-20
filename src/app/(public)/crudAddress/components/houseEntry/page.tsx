@@ -9,41 +9,30 @@ import CustomRadioButton from "@/app/(public)/crudAddress/components/entry/Custo
 import { getInputAddress } from "@/utils/api";
 import InputStatic from "@/app/(public)/enterAddress/components/common/InputStatic/page";
 import BasicDivider from "@/app/(public)/enterAddress/components/common/BasicDivider/page";
+import useAddress from "@/app/hooks/useAddress";
 
 const HouseEntry: React.FC = () => {
 	const router = useRouter();
 	const [entryMethod, setEntryMethod] =
 		useState<string>("공동현관 비밀번호");
 	const [entryInput, setEntryInput] = useState<string>("");
-	const [detailedAddress, setDetailedAddress] =
-		useState<string>("");
 	const [id, setId] = useState<string | null>(null);
-	const [selectedAddress, setSelectedAddress] =
-		useState<string>("");
-	const [receiverName, setReceiverName] = useState<string>("");
-	const [shippingName, setShippingName] = useState<string>("");
-	const [phoneNumber, setPhoneNumber] = useState<string>("");
-	const [address, setAddress] = useState({
-		shippingName: "",
-		receiverName: "",
-		phoneNumber: "",
-		selectedAddress: "",
-		detailedAddress: "",
-		entryMethod: "",
-		entryInput: "",
-		carrierOption: "",
-		carrierInput: "",
-	});
 
-	useEffect(() => {
-		if (typeof window !== "undefined") {
-			const storedId = localStorage.getItem("editAddressId");
-			if (storedId) {
-				setId(JSON.parse(storedId));
-			}
+	const { address, setAddress } = useAddress(id); // Use the custom hook
+	const {
+		detailedAddress,
+		selectedAddress,
+		receiverName,
+		shippingName,
+		phoneNumber,
+	} = address;
+	const safeJSONParse = (value: string) => {
+		try {
+			return JSON.parse(value);
+		} catch (error) {
+			return value;
 		}
-	}, []);
-
+	};
 	useEffect(() => {
 		const fetchAddress = async (id: string) => {
 			try {
@@ -52,37 +41,51 @@ const HouseEntry: React.FC = () => {
 					"Fetched address info in editAddress:",
 					data
 				);
-
-				const savedAddress =
+				const shippingName = safeJSONParse(
+					localStorage.getItem("shippingName") ||
+						data.shippingName
+				);
+				const receiverName = safeJSONParse(
+					localStorage.getItem("receiverName") ||
+						data.receiverName
+				);
+				const savedAddress = safeJSONParse(
 					localStorage.getItem("selectedAddress") ||
-					data.selectedAddress;
-				const savedDetailedAddress =
+						data.selectedAddress
+				);
+				const savedDetailedAddress = safeJSONParse(
 					localStorage.getItem("detailedAddress") ||
-					data.detailedAddress;
-				const savedEntryMethod =
-					localStorage.getItem("entryMethod") ||
-					data.entryMethod;
-				const savedEntryInput =
-					localStorage.getItem("entryInput") || data.entryInput;
-				const savedCarrierOption =
+						data.detailedAddress
+				);
+				const savedEntryMethod = safeJSONParse(
+					localStorage.getItem("entryMethod") || data.entryMethod
+				);
+				const savedEntryInput = safeJSONParse(
+					localStorage.getItem("entryInput") || data.entryInput
+				);
+				const savedCarrierOption = safeJSONParse(
 					localStorage.getItem("carrierOption") ||
-					data.carrierOption;
-				const savedCarrierInput =
+						data.carrierOption
+				);
+				const savedCarrierInput = safeJSONParse(
 					localStorage.getItem("carrierInput") ||
-					data.carrierInput;
-				const savedPhoneNumber =
-					localStorage.getItem("phoneNumber") ||
-					data.phoneNumber;
+						data.carrierInput
+				);
+				const savedPhoneNumber = safeJSONParse(
+					localStorage.getItem("phoneNumber") || data.phoneNumber
+				);
 
 				setAddress({
 					...data,
-					selectedAddress: safeJSONParse(savedAddress),
-					detailedAddress: safeJSONParse(savedDetailedAddress),
-					entryMethod: savedEntryMethod, // Directly use the saved value
-					entryInput: savedEntryInput, // Directly use the saved value
-					carrierOption: safeJSONParse(savedCarrierOption),
-					carrierInput: safeJSONParse(savedCarrierInput),
-					phoneNumber: safeJSONParse(savedPhoneNumber),
+					shippingName: shippingName,
+					receiverName: receiverName,
+					selectedAddress: savedAddress,
+					detailedAddress: savedDetailedAddress,
+					entryMethod: savedEntryMethod,
+					entryInput: savedEntryInput,
+					carrierOption: savedCarrierOption,
+					carrierInput: savedCarrierInput,
+					phoneNumber: savedPhoneNumber,
 				});
 			} catch (error) {
 				console.error("Error fetching address:", error);
@@ -92,31 +95,16 @@ const HouseEntry: React.FC = () => {
 		if (id) {
 			fetchAddress(id);
 		}
-	}, [id]);
-
-	const safeJSONParse = (value: string) => {
-		try {
-			return JSON.parse(value);
-		} catch (error) {
-			return value;
-		}
-	};
+	}, [id, setAddress]);
 
 	useEffect(() => {
 		if (typeof window !== "undefined") {
-			setPhoneNumber(address.phoneNumber);
-			setReceiverName(address.receiverName);
-			setShippingName(address.shippingName);
-			setSelectedAddress(address.selectedAddress);
-			setDetailedAddress(address.detailedAddress);
+			const storedId = localStorage.getItem("editAddressId");
+			if (storedId) {
+				setId(JSON.parse(storedId));
+			}
 		}
-	}, [
-		address.detailedAddress,
-		address.phoneNumber,
-		address.receiverName,
-		address.selectedAddress,
-		address.shippingName,
-	]);
+	}, []);
 
 	const handleBackNavigation = () => {
 		if (id) {
@@ -170,16 +158,13 @@ const HouseEntry: React.FC = () => {
 				<TopNavigation
 					text="배송지 추가"
 					onClick={handleBackNavigation}
-				/>
-				{" "}
+				/>{" "}
 				<div className="w-full max-w-[430px] bg-static-white px-[24px] text-body-1-normal font-medium pb-[16px]">
 					<div className="text-label-1-normal font-semibold mt-[10px] mb-[8px]">
 						휴대폰 번호
 					</div>
 					<InputStatic value={phoneNumber} />
-				</div>
-				{" "}
-				{" "}
+				</div>{" "}
 				<div className="w-full max-w-[430px] bg-static-white px-[24px] text-body-1-normal font-medium pb-[8px] ">
 					<div className="text-label-1-normal font-semibold mb-[8px]">
 						배송 받으실 주소
@@ -192,8 +177,7 @@ const HouseEntry: React.FC = () => {
 							<InputStatic value={detailedAddress} />
 						</div>
 					</div>
-				)}
-				{" "}
+				)}{" "}
 				<div className="mt-[16px]">
 					<BasicDivider
 						width="calc(100% - 40px)"
@@ -201,8 +185,7 @@ const HouseEntry: React.FC = () => {
 						variant="normal"
 						vertical={false}
 					/>
-				</div>
-				{" "}
+				</div>{" "}
 				<div className="px-6 pt-4">
 					<div className="text-lg font-semibold mb-2">
 						공동현관 출입 방법
@@ -308,8 +291,7 @@ const HouseEntry: React.FC = () => {
 							</div>
 						</div>
 					)}
-				</div>
-				{" "}
+				</div>{" "}
 				<div className="mt-[16px] mb-[16px]">
 					<BasicDivider
 						width="calc(100% - 40px)"
@@ -317,24 +299,19 @@ const HouseEntry: React.FC = () => {
 						variant="normal"
 						vertical={false}
 					/>
-				</div>
-				{" "}
-				{" "}
+				</div>{" "}
 				<div className="w-full max-w-[430px] bg-static-white px-[24px] text-body-1-normal font-medium pb-[16px]">
 					<div className="text-label-1-normal font-semibold mb-[8px]">
 						받는 분
 					</div>
 					<InputStatic value={receiverName} />
-				</div>
-				{" "}
-				{" "}
+				</div>{" "}
 				<div className="w-full max-w-[430px] bg-static-white px-[24px] text-body-1-normal font-medium pb-[16px] ">
 					<div className="text-label-1-normal font-semibold mb-[8px]">
 						배송지 이름
 					</div>
 					<InputStatic value={shippingName} />
-				</div>
-				{" "}
+				</div>{" "}
 			</div>
 			<div className="flex-grow w-full max-w-[430px] bg-static-white"></div>
 			<div className="fixed bottom-0 w-full max-w-[430px] h-[100px] shadow-elevation-shadow-normal-top">

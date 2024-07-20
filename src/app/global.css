@@ -12,6 +12,10 @@
 	}
 }
 
+html {
+  overflow-y: scroll;
+}
+
 /* InputCommon.css */
 .input-common::placeholder {
 	@apply text-label-assistive font-normal text-body-1-normal;

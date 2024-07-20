@@ -9,11 +9,12 @@ import {
 import CustomModal from "@/app/(public)/crudAddress/components/common/CustomModal/page";
 import Location from "@/assets/icons/editAddress/location.svg";
 import Check from "@/assets/icons/editAddress/check-large.svg";
-import TopNavigation from "@/app/(public)/enterAddress/components/common/TopNavigation/page";
+import TopNavigation from "@/app/(public)/crudAddress/components/common/TopNavigation/page";
 import { useLocalStorage } from "@/app/hooks/useLocalStorage";
-import BasicDivider from "../../enterAddress/components/common/BasicDivider/page";
+import BasicDivider from "@/app/(public)/crudAddress/components/common/BasicDivider/page";
 import ActionButtonWhite from "@/app/(public)/crudAddress/components/ActionButtonWhite/page";
 import Toast from "@/components/crudAddress/Toast";
+import local from "next/font/local";
 
 interface Address {
 	_id: string;
@@ -51,6 +52,7 @@ const AddressList: React.FC = () => {
 				phone
 			);
 			setAddresses(fetchedAddresses);
+			console.log("Fetched addresses:", fetchedAddresses);
 		} catch (error) {
 			console.error("Failed to fetch addresses:", error);
 		}
@@ -77,6 +79,34 @@ const AddressList: React.FC = () => {
 		}
 	};
 
+	const setDefaultShippingAddress = async (
+		phoneNumber: string
+	) => {
+		try {
+			const addresses = await getAddressesByPhoneNumber(
+				phoneNumber
+			);
+			const defaultAddress = addresses.find(
+				(address: any) => address.isDefault
+			);
+			if (defaultAddress) {
+				localStorage.setItem("selectedAddressGPS", JSON.stringify(defaultAddress.selectedAddress));
+				localStorage.setItem("shippingNameGPS", JSON.stringify(defaultAddress.shippingName));
+				const regex = /[가-힣 ]+ [가-힣]+[구] [가-힣]+[로길]/;
+				const matchedAddress =
+					defaultAddress.selectedAddress.match(regex);
+				if (matchedAddress) {
+					localStorage.setItem(
+						"shippingAddress",
+						JSON.stringify(matchedAddress[0])
+					);
+				}
+			}
+		} catch (error) {
+			console.error("Failed to fetch default address:", error);
+		}
+	};
+
 	const handleSetDefault = async () => {
 		if (selectedAddressId) {
 			try {
@@ -100,6 +130,7 @@ const AddressList: React.FC = () => {
 				setShowDefaultModal(false);
 				setToastMessage("기본 배송지가 변경되었습니다.");
 				setShowToast(true);
+				// setDefaultShippingAddress(phoneNumber);
 				setTimeout(() => {
 					setShowToast(false);
 				}, 5000);
@@ -109,13 +140,22 @@ const AddressList: React.FC = () => {
 		}
 	};
 
-	const handleBackNavigation = () => {
-		router.push("/");
+	const handleBackNavigation = async () => {
+		await setDefaultShippingAddress(phoneNumber);
+		setTimeout(() => {
+			router.push("/");
+		}, 2000);
+		console.log(
+			"default address set successfully to:",
+			JSON.parse(localStorage.getItem("shippingAddress") || "null")
+		);
+		// router.push("/")
 	};
 
 	const handleEdit = (id: string) => {
 		console.log(`the id is: ${id}`);
-		localStorage.setItem("editAddressId", JSON.stringify(id));
+		localStorage.setItem("editAddressId", id);
+		// this is where the id is stored in local storage for the editAddress page
 		router.push(`/crudAddress/editAddress/${id}`);
 	};
 

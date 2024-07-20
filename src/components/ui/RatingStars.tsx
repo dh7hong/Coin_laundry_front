@@ -1,3 +1,4 @@
+"use client";
 import React, { FC } from "react";
 import { Rate } from "antd";
 import { RatingStarsProps } from "@/lib/types";

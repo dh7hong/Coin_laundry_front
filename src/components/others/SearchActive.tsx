@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useRef } from "react";
 import SearchActiveSmall from "@/assets/icons/others/searchActiveSmall.svg"; // Adjust the path as necessary
 import "@/app/global.css";

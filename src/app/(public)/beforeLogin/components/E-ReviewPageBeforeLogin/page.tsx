@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Rate, Upload, Space, Input } from "antd";
+import { Rate, Upload, Space, Input, Modal } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import ChevronDownIcon from "@/assets/icons/main/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/main/chevron-up.svg";
@@ -10,12 +10,14 @@ import { ReviewProps } from "@/lib/types"; // Import the ReviewType type from th
 
 const { TextArea } = Input;
 
-const ReviewPage = ({ isEditable }) => {
+const ReviewPage = ({ isEditable }: { isEditable: boolean }) => {
 	const [isTextExpanded, setIsTextExpanded] = useState(false);
 	const [rating, setRating] = useState<number>(0);
 	const [loading, setLoading] = useState(true);
 	const [reviewText, setReviewText] = useState("");
-	const [uploadedImages, setUploadedImages] = useState([""]);
+	const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [selectedImage, setSelectedImage] = useState("");
 
 	useEffect(() => {
 		// Simulate loading delay
@@ -31,7 +33,7 @@ const ReviewPage = ({ isEditable }) => {
 				"/assets/images/laundry-pic-3.png",
 				"/assets/images/laundry-pic-4.png",
 			]);
-		}, 0); // Adjust the delay as needed
+		}, 300); // Adjust the delay as needed
 
 		return () => clearTimeout(timer);
 	}, []);
@@ -46,14 +48,25 @@ const ReviewPage = ({ isEditable }) => {
 		setReviewText(e.target.value);
 	};
 
-	const handleUpload = ({ fileList }) => {
+	const handleUpload = ({ fileList }: { fileList: any[] }) => {
 		setUploadedImages(
-			fileList.map((file) => URL.createObjectURL(file.originFileObj))
+			fileList.map((file) =>
+				URL.createObjectURL(file.originFileObj)
+			)
 		);
 	};
 
 	const toggleTextExpansion = () => {
 		setIsTextExpanded(!isTextExpanded);
+	};
+
+	const showModal = (image: string) => {
+		setSelectedImage(image);
+		setIsModalVisible(true);
+	};
+
+	const handleCancel = () => {
+		setIsModalVisible(false);
 	};
 
 	const Text = (
@@ -77,8 +90,7 @@ const ReviewPage = ({ isEditable }) => {
 
 	return (
 		<div
-			className="p-4 bg-white rounded-md border mx-auto relative border-line-neutral"
-			style={{ width: "350px" }}
+			className="p-4 bg-white rounded-md border mx-auto relative border-line-neutral w-full mb-[75px]"
 		>
 			<div className="flex justify-between items-start">
 				<div className="flex flex-col">
@@ -137,14 +149,15 @@ const ReviewPage = ({ isEditable }) => {
 							className={`relative w-20 h-20 ml-4 cursor-pointer ${
 								!uploadedImages[0] ? "bg-[#F7F7F8]" : ""
 							}`}
-							onClick={toggleTextExpansion}
+							onClick={() => showModal(uploadedImages[0])}
 						>
 							{uploadedImages[0] && (
 								<Image
 									src={uploadedImages[0]}
 									alt="First uploaded image"
-									layout="fill"
-									objectFit="cover"
+									fill
+									sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+									style={{ objectFit: 'cover' }}
 									className="bg-[#F7F7F8]"
 								/>
 							)}
@@ -175,30 +188,60 @@ const ReviewPage = ({ isEditable }) => {
 
 			{isTextExpanded && uploadedImages.length > 0 && (
 				<div
-					className="mt-2 overflow-x-auto"
+					className="mt-2 overflow-x-auto hide-scrollbar"
 					style={{ whiteSpace: "nowrap" }}
 				>
 					<div className="flex">
 						{uploadedImages.map((src, index) => (
 							<div
 								key={index}
-								className="relative w-[100px] h-[80px] bg-gray-100"
+								className="relative w-[100px] h-[80px] bg-gray-100 cursor-pointer"
 								style={{
 									flexShrink: 0,
 									marginRight: index === 3 ? "10px" : "0",
 								}}
+								onClick={() => showModal(src)}
 							>
 								<Image
 									src={src}
 									alt={`Uploaded image ${index + 1}`}
-									layout="fill"
-									objectFit="cover"
+									fill
+									sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+									style={{ objectFit: 'cover' }}
 								/>
 							</div>
 						))}
 					</div>
 				</div>
 			)}
+
+			<Modal
+				open={isModalVisible}
+				footer={null}
+				onCancel={handleCancel}
+				centered
+				closeIcon={null} // Remove the close button
+				width={300}
+				style={{
+					textAlign: 'center',
+					padding: 0, // Remove padding from the modal
+				}}
+				styles={{
+					body: {
+						padding: 0, // Remove padding from the modal body
+						margin: 0, // Remove margins from the modal body
+					},
+				}}
+			>
+					<Image
+						src={selectedImage}
+						alt="Selected image"
+						width={300}
+						height={300}
+						style={{ objectFit: 'cover' }}
+						onClick={handleCancel} // Close modal when clicking on the image
+					/>
+			</Modal>
 		</div>
 	);
 };

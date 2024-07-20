@@ -1,49 +1,109 @@
 "use client";
-import React, { FC, useState, useEffect } from "react";
-import { fakeData } from "@/data/fakeData";
-import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
+import React, { FC, useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import TopNavigation from "@/app/(public)/enterAddress/components/common/TopNavigation/page";
-import SearchActive from "@/app/(public)/enterAddress/components/search/SearchActive/page";
-import { ClipLoader } from "react-spinners";
-import BasicDivider from "@/app/(public)/enterAddress/components/common/BasicDivider/page";
 import ProgressBar from "@/app/(public)/enterAddress/components/common/ProgressBar/page";
+import Image from "next/image";
+import InputStatic from "@/app/(public)/enterAddress/components/common/InputStatic/page";
+import InputStaticAddress from "@/app/(public)/enterAddress/components/common/InputStaticAddress/page";
+import { Input } from "postcss";
+import ActionButtonAddress from "@/app/(public)/enterAddress/components/common/ActionButtonAddress/page";
 
-const SearchActivePage: FC = () => {
-	const router = useRouter(); // Initialize the router
-	const [query, setQuery] = useState("");
-	const [results, setResults] = useState(fakeData);
-	const [loading, setLoading] = useState(false);
+declare global {
+	interface Window {
+		daum: any;
+	}
+}
+
+const SearchAddress: FC = () => {
+	const router = useRouter();
+	const [postcode, setPostcode] = useState("");
+	const [address, setAddress] = useState("");
+	const [extraAddress, setExtraAddress] = useState("");
+	const [detailAddress, setDetailAddress] = useState("");
+	const [jibunAddress, setJibunAddress] = useState("");
+	const wrapRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const script = document.createElement("script");
+		script.src =
+			"//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+		script.async = true;
+		document.head.appendChild(script);
+
+		script.onload = () => {
+			// Do nothing for now, the script is ready to use
+		};
+
+		return () => {
+			document.head.removeChild(script);
+		};
+	}, []);
 
 	const handleBackNavigation = () => {
-		router.push("/enterAddress/inputAddress/receiverName"); // Navigate to the root page
+		router.push("/enterAddress/inputAddress/receiverName");
 	};
 
-	const handleSearch = (
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
-		const keyword = e.target.value;
-		setQuery(keyword);
-		setLoading(true);
-		setTimeout(() => {
-			if (keyword) {
-				const filteredData = fakeData.filter((item) =>
-					item.address.includes(keyword)
-				);
-				setResults(filteredData);
-			} else {
-				setResults(fakeData);
-			}
-			setLoading(false);
-		}, 500); // Simulate a delay for loading
-	};
+	const handleComplete = (data: any) => {
+		let addr = "";
+		let extraAddr = "";
+		let jibunAddr = data.jibunAddress; // Get the 지번 address
 
-	const handleSelect = (address: string) => {
-		if (typeof window !== "undefined") {
-			localStorage.setItem("selectedAddress", address);
-			console.log(`Saved address: ${address}`);
-			alert(`Saved address: ${address}`);
+		if (data.userSelectedType === "R") {
+			addr = data.roadAddress;
+		} else {
+			addr = data.jibunAddress;
 		}
-		router.push("/enterAddress/inputAddress/addDetailedAddress");
+
+		if (data.userSelectedType === "R") {
+			if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+				extraAddr += data.bname;
+			}
+			if (data.buildingName !== "" && data.apartment === "Y") {
+				extraAddr +=
+					extraAddr !== ""
+						? ", " + data.buildingName
+						: data.buildingName;
+			}
+			if (extraAddr !== "") {
+				extraAddr = " (" + extraAddr + ")";
+			}
+		}
+
+		setPostcode(data.zonecode);
+		setAddress(addr);
+		setExtraAddress(extraAddr);
+		setJibunAddress(jibunAddr); // Set the 지번 address
+		setDetailAddress("");
+
+		if (wrapRef.current) {
+			wrapRef.current.style.display = "none";
+		}
+
+		// Focus on the detail address input
+		const detailAddressInput = document.getElementById(
+			"detailAddress"
+		) as HTMLInputElement;
+		if (detailAddressInput) {
+			detailAddressInput.focus();
+		}
+	};
+
+	const handleSearch = () => {
+		if (wrapRef.current) {
+			wrapRef.current.style.display = "block";
+		}
+
+		new window.daum.Postcode({
+			oncomplete: handleComplete,
+			onresize: function (size: { height: string }) {
+				if (wrapRef.current) {
+					wrapRef.current.style.height = size.height + "px";
+				}
+			},
+			width: "100%",
+			height: "100%",
+		}).embed(wrapRef.current);
 	};
 
 	return (
@@ -55,85 +115,110 @@ const SearchActivePage: FC = () => {
 					onClick={handleBackNavigation}
 				/>
 				<div className="mx-[24px] mt-[16px] mb-[20px]">
-					<SearchActive value={query} onChange={handleSearch} />
-				</div>
-				{!query ? (
-					<>
-						<BasicDivider
-							className="absolute"
-							variant="thick"
-							vertical={false}
-							width="w-full max-w-[430px]" // Adjust width calculation
-						/>
-						<div className="self-start ml-[20px] mt-[20px] mb-[20px] text-body-1-normal">
-							이렇게 검색해보세요.
+					<div className="w-full p-2">
+						<div className="text-headline-2 mb-[8px]">
+							&nbsp;&nbsp;우편번호
 						</div>
-
-						<div className="flex flex-col self-start">
-							<div className="text-label-1-normal text-label-normal ml-[20px]">
-								&nbsp;&nbsp;•&nbsp;&nbsp;도로명 + 건물번호
-							</div>
-							<div className="text-caption-1 text-label-alternative ml-[42px] mt-[5px]">
-								예시) 서빙고로 17
-							</div>
-							<div className="text-label-1-normal text-label-normal ml-[20px] mt-[10px]">
-								&nbsp;&nbsp;•&nbsp;&nbsp;지역명 + 번지
-							</div>
-							<div className="text-caption-1 text-label-alternative ml-[42px] mt-[5px]">
-								예시) 한강로2가 427
-							</div>
-							<div className="text-label-1-normal text-label-normal ml-[20px] mt-[10px]">
-								&nbsp;&nbsp;•&nbsp;&nbsp;건물명(아파트명)
-							</div>
-							<div className="text-caption-1 text-label-alternative ml-[42px] mt-[5px]">
-								예시) 이촌동 코인 세탁소
-							</div>
-						</div>
-					</>
-				) : loading ? (
-					<div className="flex justify-center items-center w-full h-full">
-						<ClipLoader
-							color="#00A5A1"
-							loading={loading}
-							size={35}
+						<InputStatic
+							type="text"
+							id="postcode"
+							placeholder="우편번호"
+							value={postcode}
+							readOnly
 						/>
 					</div>
-				) : (
-					results.map((item) => (
-						<div
-							key={item.id}
-							className="self-start py-[10px] cursor-pointer w-full max-w-[430px]"
-							onClick={() => handleSelect(item.address)}
-						>
-							<div className="text-caption-1 font-medium text-primary-strong ml-[24px]">
-								{item.serviceAvailable}
+					<div className="w-full p-2">
+						<div className="text-headline-2 mb-[8px]">
+							&nbsp;&nbsp;도로명 주소
 							</div>
-							<div className="text-label-1-normal mt-[1px] ml-[24px]">
-								{item.address}
+							<InputStatic
+								type="text"
+								id="address"
+								placeholder="도로명 주소"
+								value={address}
+								readOnly
+							/>
+					</div>
+					<div className="w-full p-2">
+						<div className="text-headline-2 mb-[8px]">
+							&nbsp;&nbsp;참고항목
 							</div>
-							<div className="flex items-center mt-[2px]">
-								<span className="border-[0.5px] px-[4px] py-[2px] text-caption-2 text-label-assistive rounded-[4px] text-center ml-[24px]">
-									지번
-								</span>
-								<div className="text-caption-1 text-label-alternative ml-[5px]">
-									{item.detail}
-								</div>
+							<InputStatic
+								type="text"
+								id="extraAddress"
+								placeholder="참고항목"
+								value={extraAddress}
+								readOnly
+							/>
+					</div>
+					<div className="w-full p-2">
+						<div className="text-headline-2 mb-[8px]">
+							&nbsp;&nbsp;지번 주소
 							</div>
-							<div className="mt-[16px]">
-								<BasicDivider
-									width="calc(100% - 40px)" // Adjust width calculation
-									className="!bg-line-neutral mx-[20px] max-w-[430px]"
-									variant="normal"
-									vertical={false}
-								/>
+							<InputStatic
+								type="text"
+								id="jibunAddress"
+								placeholder="지번 주소"
+								value={jibunAddress}
+								readOnly
+							/>
+					</div>
+					<div className="w-full mb-4 p-2">
+						<div className="text-headline-2 mb-[8px]">
+							&nbsp;&nbsp;상세 주소
 							</div>
-						</div>
-					))
-				)}
+							<InputStaticAddress
+								type="text"
+								id="detailAddress"
+								placeholder="상세 주소 임력"
+								value={detailAddress}
+								onChange={(e) =>
+									setDetailAddress(e.target.value)
+								}
+							/>
+					</div>
+					<div className="w-full px-[8px]">
+						<ActionButtonAddress
+							label="주소 찾기 (꼭 도로명 주소를 선택)"
+							onClick={handleSearch}
+						/>
+					</div>
+				</div>
+				<div
+					ref={wrapRef}
+					id="wrap"
+					style={{
+						display: "none",
+						border: "1px solid",
+						width: "100% - 40px",
+						height: "300px",
+						margin: "5px 30px",
+						position: "relative",
+					}}
+				>
+					<Image
+						width={16}
+						height={16}
+						src="/assets/icons/misc/close.png"
+						id="btnFoldWrap"
+						style={{
+							cursor: "pointer",
+							position: "absolute",
+							right: "0px",
+							top: "-1px",
+							zIndex: 1,
+						}}
+						onClick={() => {
+							if (wrapRef.current) {
+								wrapRef.current.style.display = "none";
+							}
+						}}
+						alt="접기 버튼"
+					/>
+				</div>
 			</div>
-			<div className="flex-grow w-full max-w-[430px] bg-static-white"></div>
 		</div>
 	);
 };
 
-export default SearchActivePage;
+export default SearchAddress;

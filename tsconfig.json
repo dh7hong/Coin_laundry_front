@@ -32,7 +32,7 @@
 		"**/*.tsx",
 		".next/types/**/*.ts",
 		"src/testConnection.mjs",
-		"src/lib/mongoose.mjs"
+		"src/lib/mongoose.mjs",
 	],
 	"exclude": ["node_modules"]
 }
