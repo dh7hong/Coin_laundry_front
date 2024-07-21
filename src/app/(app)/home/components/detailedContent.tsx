@@ -40,7 +40,9 @@ const DetailedLaundryPage = () => {
 					<DiscountTagIcon className="w-4 h-4" />
 					<span className="text-[#00A5A1] font-semibold ml-1 text-[11px]">
 						세탁+건조{" "}
-						<span className="text-gray-500 line-through">6,000</span>
+						<span className="text-gray-500 line-through">
+							6,000
+						</span>
 						<span className="text-red-500 text-[14px]">
 							{"   "}4,000원
 						</span>

@@ -19,8 +19,9 @@ const MainView: React.FC = () => {
 	const [shippingAddress, setShippingAddress] = useState("");
 
 	useEffect(() => {
-		const storedAddress = JSON.parse(localStorage.getItem(
-			"shippingAddress") || "null");
+		const storedAddress = JSON.parse(
+			localStorage.getItem("shippingAddress") || "null"
+		);
 		if (storedAddress) {
 			setShippingAddress(storedAddress);
 		} else {
@@ -34,6 +35,10 @@ const MainView: React.FC = () => {
 
 	const navigateToUserGuide = () => {
 		router.push("/userGuide");
+	};
+
+	const viewCoinLaundryNearby = () => {
+		router.push("/viewMap/viewMapSelectedAddress");
 	};
 
 	return (
@@ -83,7 +88,6 @@ const MainView: React.FC = () => {
 					/>
 					<LaundryItem
 						icon={
-							// <ShirtAndSheetsIcon className="w-[60px] h-[60px]" />
 							<div className="relative mt-[20px]">
 								<TShirtIconSmall className="absolute bottom-[3.1px] right-[7px] w-[35.45px] h-[35.45px]" />
 								<BedIconSmall className="relative w-[35.45px] h-[35.45px] top-[4px] left-[7px]" />
@@ -101,7 +105,10 @@ const MainView: React.FC = () => {
 					/>
 				</div>
 				<div className="w-full h-14">
-					<button className="w-full flex items-center justify-center bg-white p-4 rounded-xl">
+					<button
+						onClick={viewCoinLaundryNearby}
+						className="w-full flex items-center justify-center bg-white p-4 rounded-xl"
+					>
 						<NavigationIcon className="mr-2 w-5 h-6" />
 						<span className="text-label-1-normal font-semibold">
 							내 주위 이용 가능한 코인 세탁소 보기

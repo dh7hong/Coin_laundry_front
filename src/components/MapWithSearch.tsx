@@ -1,5 +1,7 @@
 "use client";
 
+import TopNavigation from "@/app/(public)/crudAddress/components/common/TopNavigation/page";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 declare global {
@@ -263,35 +265,54 @@ const MapWithSearch: React.FC = () => {
 		return distance * 1000;
 	};
 
+	const router = useRouter();
+
+	const handleBackNavigation = () => {
+		router.push("/");
+	};
+
 	return (
-		<div
-			style={{
-				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
-				height: "100vh",
-			}}
-		>
-			<div
-				id="map"
-				ref={mapRef}
-				style={{
-					maxWidth: "430px",
-					height: "400px",
-					width: "100%",
-				}}
-			/>
-			{selectedPlace && (
-				<div style={{ textAlign: "center", marginTop: "20px" }}>
-					<h3>{selectedPlace.place_name}</h3>
-					<p>{selectedPlace.road_address_name}</p>
-					<p>{selectedPlace.address_name}</p>
-					<p>{selectedPlace.phone}</p>
-					{distance !== null && (
-						<p>Distance from home: {distance.toFixed(0)} m</p>
-					)}
+		<div>
+			<div className="flex flex-col items-center bg-gray-50">
+				<div className="w-full max-w-[430px] bg-static-white flex flex-col pt-[5px]">
+					<TopNavigation
+						text="지도로 세탁소 보기"
+						onClick={handleBackNavigation}
+					></TopNavigation>
 				</div>
-			)}
+			</div>
+
+			<div
+				style={{
+					display: "flex",
+					flexDirection: "column",
+					alignItems: "center",
+					height: "100vh",
+				}}
+			>
+				<div
+					id="map"
+					ref={mapRef}
+					style={{
+						maxWidth: "430px",
+						height: "400px",
+						width: "100%",
+					}}
+				/>
+				{selectedPlace && (
+					<div
+						style={{ textAlign: "center", marginTop: "20px" }}
+					>
+						<h3>{selectedPlace.place_name}</h3>
+						<p>{selectedPlace.road_address_name}</p>
+						<p>{selectedPlace.address_name}</p>
+						<p>{selectedPlace.phone}</p>
+						{distance !== null && (
+							<p>Distance from home: {distance.toFixed(0)} m</p>
+						)}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

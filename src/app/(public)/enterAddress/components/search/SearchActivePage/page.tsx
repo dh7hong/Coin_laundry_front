@@ -6,7 +6,6 @@ import ProgressBar from "@/app/(public)/enterAddress/components/common/ProgressB
 import Image from "next/image";
 import InputStatic from "@/app/(public)/enterAddress/components/common/InputStatic/page";
 import InputStaticAddress from "@/app/(public)/enterAddress/components/common/InputStaticAddress/page";
-import { Input } from "postcss";
 import ActionButtonAddress from "@/app/(public)/enterAddress/components/common/ActionButtonAddress/page";
 
 declare global {
@@ -20,7 +19,7 @@ const SearchAddress: FC = () => {
 	const [postcode, setPostcode] = useState("");
 	const [address, setAddress] = useState("");
 	const [extraAddress, setExtraAddress] = useState("");
-	const [detailAddress, setDetailAddress] = useState("");
+	const [detailedAddress, setDetailedAddress] = useState("");
 	const [jibunAddress, setJibunAddress] = useState("");
 	const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -40,6 +39,15 @@ const SearchAddress: FC = () => {
 		};
 	}, []);
 
+	useEffect(() => {
+		const savedDetailedAddress = localStorage.getItem(
+			"detailedAddress"
+		);
+		if (savedDetailedAddress) {
+			setDetailedAddress(savedDetailedAddress);
+		}
+	}, []);
+
 	const handleBackNavigation = () => {
 		router.push("/enterAddress/inputAddress/receiverName");
 	};
@@ -49,8 +57,12 @@ const SearchAddress: FC = () => {
 		let extraAddr = "";
 		let jibunAddr = data.jibunAddress; // Get the 지번 address
 
-		if (data.userSelectedType === "R") {
+		if (
+			typeof window !== "undefined" &&
+			data.userSelectedType === "R"
+		) {
 			addr = data.roadAddress;
+			localStorage.setItem("selectedAddress", addr);
 		} else {
 			addr = data.jibunAddress;
 		}
@@ -74,18 +86,18 @@ const SearchAddress: FC = () => {
 		setAddress(addr);
 		setExtraAddress(extraAddr);
 		setJibunAddress(jibunAddr); // Set the 지번 address
-		setDetailAddress("");
+		setDetailedAddress("");
 
 		if (wrapRef.current) {
 			wrapRef.current.style.display = "none";
 		}
 
-		// Focus on the detail address input
-		const detailAddressInput = document.getElementById(
-			"detailAddress"
+		// Focus on the detailed address input
+		const detailedAddressInput = document.getElementById(
+			"detailedAddress"
 		) as HTMLInputElement;
-		if (detailAddressInput) {
-			detailAddressInput.focus();
+		if (detailedAddressInput) {
+			detailedAddressInput.focus();
 		}
 	};
 
@@ -104,6 +116,18 @@ const SearchAddress: FC = () => {
 			width: "100%",
 			height: "100%",
 		}).embed(wrapRef.current);
+	};
+
+	const handleDetailedAddressChange = (
+		e: React.ChangeEvent<HTMLInputElement>
+	) => {
+		const value = e.target.value;
+		setDetailedAddress(value);
+		localStorage.setItem("detailedAddress", value); // Save to local storage
+	};
+
+	const handleNextNavigation = () => {
+		router.push("/enterAddress/inputAddress/houseEntry");
 	};
 
 	return (
@@ -130,57 +154,64 @@ const SearchAddress: FC = () => {
 					<div className="w-full p-2">
 						<div className="text-headline-2 mb-[8px]">
 							&nbsp;&nbsp;도로명 주소
-							</div>
-							<InputStatic
-								type="text"
-								id="address"
-								placeholder="도로명 주소"
-								value={address}
-								readOnly
-							/>
+						</div>
+						<InputStatic
+							type="text"
+							id="address"
+							placeholder="도로명 주소"
+							value={address}
+							readOnly
+						/>
 					</div>
 					<div className="w-full p-2">
 						<div className="text-headline-2 mb-[8px]">
 							&nbsp;&nbsp;참고항목
-							</div>
-							<InputStatic
-								type="text"
-								id="extraAddress"
-								placeholder="참고항목"
-								value={extraAddress}
-								readOnly
-							/>
+						</div>
+						<InputStatic
+							type="text"
+							id="extraAddress"
+							placeholder="참고항목"
+							value={extraAddress}
+							readOnly
+						/>
 					</div>
 					<div className="w-full p-2">
 						<div className="text-headline-2 mb-[8px]">
 							&nbsp;&nbsp;지번 주소
-							</div>
-							<InputStatic
-								type="text"
-								id="jibunAddress"
-								placeholder="지번 주소"
-								value={jibunAddress}
-								readOnly
-							/>
+						</div>
+						<InputStatic
+							type="text"
+							id="jibunAddress"
+							placeholder="지번 주소"
+							value={jibunAddress}
+							readOnly
+						/>
 					</div>
 					<div className="w-full mb-4 p-2">
 						<div className="text-headline-2 mb-[8px]">
 							&nbsp;&nbsp;상세 주소
-							</div>
-							<InputStaticAddress
+						</div>
+						<div className="flex items-center border rounded-md w-full max-w-[430px] h-[48px] px-[16px] py-[12px] text-body-1-reading">
+							<input
 								type="text"
-								id="detailAddress"
-								placeholder="상세 주소 임력"
-								value={detailAddress}
-								onChange={(e) =>
-									setDetailAddress(e.target.value)
-								}
+								id="detailedAddress"
+								placeholder="상세 주소 입력"
+								value={detailedAddress}
+								className="bg-transparent text-body-1-reading text-label-normal font-normal w-full outline-none"
+								onChange={handleDetailedAddressChange}
 							/>
+						</div>
 					</div>
-					<div className="w-full px-[8px]">
+					<div className="w-full px-[8px] mb-4">
 						<ActionButtonAddress
 							label="주소 찾기 (꼭 도로명 주소를 선택)"
 							onClick={handleSearch}
+						/>
+					</div>
+					<div className="w-full px-[8px]">
+						<ActionButtonAddress
+							label="다음"
+							onClick={handleNextNavigation}
 						/>
 					</div>
 				</div>

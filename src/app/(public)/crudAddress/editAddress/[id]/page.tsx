@@ -1,40 +1,103 @@
-"use client"
-import React, { useEffect, useState } from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
+import {
+	getInputAddress,
+	updateInputAddress,
+} from "@/utils/api";
 import TopNavigation from "@/app/(public)/crudAddress/components/common/TopNavigation/page";
 import InputNonStatic from "@/app/(public)/crudAddress/components/common/InputNonStatic/page";
 import { clearSpecificLocalStorageItems } from "@/utils/localStorage";
-import ActionButton from "@/app/(public)/crudAddress/components/common/ActionButton/page";
+import ActionButton from "@/app/(public)/enterAddress/components/common/ActionButton/page";
 import Toast from "@/components/crudAddress/Toast";
-import useAddress from "@/app/hooks/useAddress";
-import { updateInputAddress } from "@/utils/api";
 
 const EditAddress: React.FC = () => {
 	const router = useRouter();
 	const params = useParams();
 	const id = Array.isArray(params.id) ? params.id[0] : params.id; // Ensure id is a string
-
-	const { address, setAddress } = useAddress(id);
+	const [address, setAddress] = useState({
+		shippingName: "",
+		receiverName: "",
+		phoneNumber: "",
+		selectedAddress: "",
+		detailedAddress: "",
+		entryMethod: "",
+		entryInput: "",
+		carrierOption: "",
+		carrierInput: "",
+	});
 	const [showToast, setShowToast] = useState<boolean>(false);
 	const [toastMessage, setToastMessage] = useState<string>("");
 
+	const safeJSONParse = (value: string) => {
+		try {
+			return JSON.parse(value);
+		} catch (error) {
+			return value;
+		}
+	};
+
 	useEffect(() => {
-		clearSpecificLocalStorageItems();
+		const fetchAddress = async (id: string) => {
+			try {
+				const data = await getInputAddress(id);
+				console.log(
+					"Fetched address info in editAddress:",
+					data
+				);
+
+				const savedAddress =
+					localStorage.getItem("selectedAddress") ||
+					data.selectedAddress;
+				const savedDetailedAddress =
+					localStorage.getItem("detailedAddress") ||
+					data.detailedAddress;
+				const savedEntryMethod =
+					localStorage.getItem("entryMethod") ||
+					data.entryMethod;
+				const savedEntryInput =
+					localStorage.getItem("entryInput") || data.entryInput;
+				const savedCarrierOption =
+					localStorage.getItem("carrierOption") ||
+					data.carrierOption;
+				const savedCarrierInput =
+					localStorage.getItem("carrierInput") ||
+					data.carrierInput;
+
+				setAddress({
+					...data,
+					selectedAddress: safeJSONParse(savedAddress),
+					detailedAddress: safeJSONParse(savedDetailedAddress),
+					entryMethod: safeJSONParse(savedEntryMethod),
+					entryInput: safeJSONParse(savedEntryInput),
+					carrierOption: safeJSONParse(savedCarrierOption),
+					carrierInput: safeJSONParse(savedCarrierInput),
+				});
+				clearSpecificLocalStorageItems();
+			} catch (error) {
+				console.error("Error fetching address:", error);
+			}
+		};
+
+		if (id) {
+			fetchAddress(id);
+		}
 	}, [id]);
 
 	const handleActivateAddress = () => {
 		localStorage.setItem("editAddressId", JSON.stringify(id));
-		router.push("/crudAddress/components/SearchActivePage");
+		router.push(`/crudAddress/components/SearchActivePage`);
 	};
 
 	const handleEntryMethod = () => {
 		localStorage.setItem("editAddressId", JSON.stringify(id));
-		router.push("/crudAddress/components/houseEntry");
+		router.push(`/crudAddress/components/houseEntry`);
 	};
 
 	const handleCarrierMethod = () => {
 		localStorage.setItem("editAddressId", JSON.stringify(id));
-		router.push("/crudAddress/components/carrierOptions");
+		router.push(`/crudAddress/components/carrierOptions`);
 	};
 
 	const handleUpdate = async () => {
@@ -46,6 +109,7 @@ const EditAddress: React.FC = () => {
 				setShowToast(false);
 				router.push("/crudAddress/addressList");
 			}, 5000);
+			
 		} catch (error) {
 			console.error("Error updating address:", error);
 		}
@@ -119,7 +183,6 @@ const EditAddress: React.FC = () => {
 								value={address.selectedAddress}
 								onChange={handleChange}
 								onClick={handleActivateAddress}
-								className="cursor-pointer"
 							/>
 						</div>
 						{address.detailedAddress && (
@@ -129,7 +192,6 @@ const EditAddress: React.FC = () => {
 									value={address.detailedAddress}
 									onChange={handleChange}
 									onClick={handleActivateAddress}
-									className="cursor-pointer"
 								/>
 							</div>
 						)}
@@ -146,7 +208,6 @@ const EditAddress: React.FC = () => {
 								value={address.entryInput}
 								onChange={handleChange}
 								onClick={handleEntryMethod}
-								className="cursor-pointer"
 							/>
 						) : (
 							<InputNonStatic
@@ -154,7 +215,6 @@ const EditAddress: React.FC = () => {
 								value={address.entryMethod}
 								onChange={handleChange}
 								onClick={handleEntryMethod}
-								className="cursor-pointer"
 							/>
 						)}
 					</div>
@@ -169,7 +229,6 @@ const EditAddress: React.FC = () => {
 								value={address.carrierInput}
 								onChange={handleChange}
 								onClick={handleCarrierMethod}
-								className="cursor-pointer"
 							/>
 						) : (
 							<InputNonStatic
@@ -177,7 +236,6 @@ const EditAddress: React.FC = () => {
 								value={address.carrierOption}
 								onChange={handleChange}
 								onClick={handleCarrierMethod}
-								className="cursor-pointer"
 							/>
 						)}
 					</div>
@@ -194,5 +252,6 @@ const EditAddress: React.FC = () => {
 		</div>
 	);
 };
+
 
 export default EditAddress;
