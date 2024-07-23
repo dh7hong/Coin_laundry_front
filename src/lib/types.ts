@@ -106,3 +106,28 @@ export type CustomSelectProps = {
   options?: Option[]; // Make options optional since we'll provide a default value
 };
 
+
+
+export type TopNavigationProps = {
+  text: string;
+  onClick: () => void;
+  children?: ReactNode;
+};
+
+export type PageProps = {
+  label: string;
+  onClick: () => void;
+};
+
+export interface Option {
+  value: string;
+  label: string;
+}
+
+export type CustomSelectProps = {
+  id: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<{ value: string }>) => void;
+  options?: Option[]; // Make options optional since we'll provide a default value
+};
+

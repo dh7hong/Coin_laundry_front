@@ -1,5 +1,9 @@
 import ChevronRightIconLarge from "@/assets/icons/others/chevron-right-large.svg";
+<<<<<<< HEAD
 import ReviewPage from "@/app/(app)/home/components/E-ReviewPageAfterLogin/page";
+=======
+import ReviewPage from "@/app/(public)/beforeLogin/components/E-ReviewPageBeforeLogin/page";
+>>>>>>> 58859fb9558e1986de493197f11208773405cfac
 
 const ContainerReviewPage = () => {
 	return (

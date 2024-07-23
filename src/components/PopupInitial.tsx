@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const PopupInitial: React.FC = () => {
 	const [showPopup, setShowPopup] = useState(true);
+	const [showPopup, setShowPopup] = useState(true);
 
 	return (
 		<div className="relative ">
