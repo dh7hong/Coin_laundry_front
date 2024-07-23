@@ -1,9 +1,5 @@
 import ChevronRightIconLarge from "@/assets/icons/others/chevron-right-large.svg";
-<<<<<<< HEAD
 import ReviewPage from "@/app/(app)/home/components/E-ReviewPageAfterLogin/page";
-=======
-import ReviewPage from "@/app/(public)/beforeLogin/components/E-ReviewPageBeforeLogin/page";
->>>>>>> 58859fb9558e1986de493197f11208773405cfac
 
 const ContainerReviewPage = () => {
 	return (
@@ -18,8 +14,12 @@ const ContainerReviewPage = () => {
 										사용자들의 내돈내산 후기
 									</h2>
 								</div>
-								<p className="text-label-1-normal text-label-alternative" style={{ wordBreak: "keep-all" }}>
-									리뷰는 결제 내역이 있는 실제 사용자들만 남길 수 있어요!
+								<p
+									className="text-label-1-normal text-label-alternative"
+									style={{ wordBreak: "keep-all" }}
+								>
+									리뷰는 결제 내역이 있는 실제 사용자들만 남길 수
+									있어요!
 								</p>
 							</div>
 						</div>
